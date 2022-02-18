@@ -29,8 +29,10 @@ impl MultisigTransaction {
             &self.safe_transaction.data_decoded,
             info_provider,
         )
-        .await;
+        .await?;
+
         Ok(TransactionDetails {
+            safe_address: self.safe_transaction.safe.to_owned(),
             tx_id: self.generate_id(),
             executed_at: self.execution_date.map(|data| data.timestamp_millis()),
             tx_status: self.map_status(&safe_info),
@@ -140,8 +142,10 @@ impl ModuleTransaction {
             &safe_transaction.data_decoded,
             info_provider,
         )
-        .await;
+        .await?;
+
         Ok(TransactionDetails {
+            safe_address: self.safe_transaction.safe.to_owned(),
             tx_id: self.generate_id(),
             executed_at: Some(self.execution_date.timestamp_millis()),
             tx_status: self.map_status(),
@@ -175,18 +179,18 @@ pub async fn is_trusted_delegate_call(
     to: &str,
     data_decoded: &Option<DataDecoded>,
     info_provider: &(impl InfoProvider + Sync),
-) -> Option<bool> {
+) -> ApiResult<Option<bool>> {
     if operation == &Operation::DELEGATE {
-        let has_nested_delegate = data_decoded
+        let contract_info = info_provider.contract_info(to).await?;
+
+        let has_nested_delegate_calls = !data_decoded
             .as_ref()
             .map_or(false, |data_decoded| data_decoded.has_nested_delegated());
 
-        info_provider
-            .contract_info(to)
-            .await
-            .map(|contract_info| contract_info.trusted_for_delegate_call && !has_nested_delegate)
-            .ok()
+        let is_trusted_delegate_call =
+            contract_info.trusted_for_delegate_call && has_nested_delegate_calls;
+        return Ok(Some(is_trusted_delegate_call));
     } else {
-        None
+        Ok(None)
     }
 }
