@@ -1,18 +1,39 @@
 on: [push]
 
 jobs:
-  docker-build-tag-push:
-    runs-on: ubuntu-latest
-    name: Docker Build, Tag & Publish
-    steps:
-      - name: Build, Tag & Publish Image to DockerHub
-        uses: dinushchathurya/build-tag-push-action@v1.2.1
-        with:
-          username: ${{ secrets.DHUBU }}
-          password: ${{ secrets.DHUBP }}
-          context: .
-          file: Dockerfile
-          repoOwner: neonlabsorg
-          repository: neon-gnosis-client-gateway
-          tag: latest
 
+  push_server_image :
+
+    name : Push Docker image to Docker Hub - server
+
+    runs-on : ubuntu-latest
+
+    permissions:
+
+      packages: write
+
+      contents: read
+
+    steps:
+
+      - uses: actions/checkout@v3
+
+      - name: deploy-container-to-registry
+
+      - uses: slabstech/action-deploy-container-to-registry@v0.0.1
+
+        with:
+
+          docker-username: ${{ secrets.DHUBU }}
+
+          docker-password: ${{ secrets.DHUBP }} 
+
+          github-actor: neonlabsorg
+
+          github-repository: ${{ github.repository }}
+      
+          project-name: neon-gnosis-client-gateway
+
+          service-name: neon-gnosis-client-gateway
+      
+          dockerfile-path: ./Dockerfile
