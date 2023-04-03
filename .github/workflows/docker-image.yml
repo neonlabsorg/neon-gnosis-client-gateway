@@ -9,7 +9,7 @@ jobs:
     steps:
       - name: Build Docker Image
         id: buildAndPushImage
-        uses: abhishek-070/docker-image-build-push-action@v1.0
+        uses: Abhishek-070/Dockerhub-Build-Push@v1.0
         with:
           registry_url: 'docker.io'
           repository_name: 'neonlabsorg'
@@ -19,3 +19,7 @@ jobs:
           docker_file: '.'
       - name: Get pre step result output image_pull_url
         run: echo "The time was ${{ steps.buildAndPushImage.outputs.image_pull_url }}"
+        
+
+  
+
