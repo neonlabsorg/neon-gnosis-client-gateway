@@ -1,39 +1,23 @@
-on: [push]
+name: publish docker
+
+on:
+  push:
+    branches:
+      - 'main'
 
 jobs:
-
-  push_server_image :
-
-    name : Push Docker image to Docker Hub - server
-
-    runs-on : ubuntu-latest
-
-    permissions:
-
-      packages: write
-
-      contents: read
-
+  docker:
+    runs-on: ubuntu-latest
     steps:
-
-      - uses: actions/checkout@v3
-
-      - name: deploy-container-to-registry
-
-      - uses: slabstech/action-deploy-container-to-registry@v0.0.1
-
+      -
+        name: Login to Docker Hub
+        uses: docker/login-action@v2
         with:
-
-          docker-username: ${{ secrets.DHUBU }}
-
-          docker-password: ${{ secrets.DHUBP }} 
-
-          github-actor: neonlabsorg
-
-          github-repository: ${{ github.repository }}
-      
-          project-name: neon-gnosis-client-gateway
-
-          service-name: neon-gnosis-client-gateway
-      
-          dockerfile-path: ./Dockerfile
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      -
+        name: Build and push
+        uses: docker/build-push-action@v4
+        with:
+          push: true
+          tags: neonlabsorg/neon-gnosis-client-gateway:latest
