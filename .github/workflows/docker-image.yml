@@ -1,25 +1,18 @@
-on:
-  push:
-    branches:
-      - "main"
+on: [push]
 
 jobs:
-  docker:
+  docker-build-tag-push:
     runs-on: ubuntu-latest
+    name: Docker Build, Tag & Publish
     steps:
-      - name: Build Docker Image
-        id: buildAndPushImage
-        uses: Abhishek-070/Dockerhub-Build-Push@v1.0
+      - name: Build, Tag & Publish Image to DockerHub
+        uses: dinushchathurya/build-tag-push-action@v1.2.1
         with:
-          registry_url: 'docker.io'
-          repository_name: 'neonlabsorg'
-          user_name: ${{ secrets.DHUBU }}
+          username: ${{ secrets.DHUBU }}
           password: ${{ secrets.DHUBP }}
-          image_version: 'latest'
-          docker_file: '.'
-      - name: Get pre step result output image_pull_url
-        run: echo "The time was ${{ steps.buildAndPushImage.outputs.image_pull_url }}"
-        
-
-  
+          context: .
+          file: Dockerfile
+          repoOwner: ${{ secrets.DHUBU }}
+          repository:  neonlabsorg
+          tag: 1.0.0
 
