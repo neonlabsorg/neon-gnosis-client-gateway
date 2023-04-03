@@ -1,0 +1,25 @@
+{
+    "chainId": "245022926",
+    "chainName": "neonevm",
+    "rpcUri": {
+      "authentication": "NO_AUTHENTICATION",
+      "value": "https://devnet.neonevm.org"
+    },
+    "blockExplorerUriTemplate": {
+      "address": "https://neonscan.org/address/{{address}}",
+      "txHash": "https://neonscan.org/tx/{{txHash}}"
+    },
+    "transactionService": "http://nginx:8000/txs",
+    "nativeCurrency": {
+      "name": "NEON",
+      "symbol": "NEON",
+      "decimals": 18
+    },
+    "theme": {
+      "textColor": "#ffffff",
+      "backgroundColor": "#000000"
+    },
+    
+    "recommendedMasterCopyVersion": "1.0.0"
+  }
+  

@@ -131,6 +131,7 @@ pub const TX_DETAILS_WITH_ORIGIN: &str = include_str!("results/tx_details_with_o
 
 pub const CHAIN_INFO_RINKEBY: &str = include_str!("chains/rinkeby.json");
 pub const CHAIN_INFO_MOONBASE: &str = include_str!("chains/moonbase.json");
+pub const CHAIN_INFO_NEONDEVNET: &str = include_str!("chains/neondevnet.json");
 pub const CHAIN_INFO_MOONRIVER: &str = include_str!("chains/moonriver.json");
 pub const CHAIN_INFO_POLYGON: &str = include_str!("chains/polygon.json");
 pub const CHAIN_INFO_RINKEBY_FIXED_GAS_PRICE: &str =
